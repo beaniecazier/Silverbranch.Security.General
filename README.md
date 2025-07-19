@@ -1,9 +1,11 @@
 ![Silverbranch Codeworks Banner](https://gitlab.com/silverbranch-utilities/assets/-/raw/trunk/banner-pride.png)
 # 📦 Silverbranch Codeworks Security General
+
+![GitHub License](https://img.shields.io/github/license/beaniecazier/Silverbranch.Security.General)
+
 The General collection Authorization, Authentication and Security codebase for all Silverbranch Codeworks Software Solutions
 
 ## Project status
-![GitHub License](https://img.shields.io/github/license/beaniecazier/Silverbranch.Security.General)
 This is currently in an unreleased alpha state while I get everything ready for the first two major projects to be pushed
 
 # About
