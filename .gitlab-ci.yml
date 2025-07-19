@@ -1,0 +1,39 @@
+default:
+  image: mcr.microsoft.com/dotnet/sdk:8.0
+
+stages:
+  - test
+  - secret-detection
+  - deploy
+
+variables:
+  SECRET_DETECTION_ENABLED: 'true'
+secret_detection:
+  stage: secret-detection
+include:
+  - template: Security/Secret-Detection.gitlab-ci.yml
+
+deploy:
+  stage: deploy
+  script:
+    - |
+      dotnet nuget add \
+      source "${CI_API_V4_URL}/groups/$NUGET_GROUP_ID_SILVERBRANCH/-/packages/nuget/index.json" \
+      --name GroupPackagesSilverbranchUtilities \
+      --username $NUGET_PULL_USER \
+      --password $NUGET_AUTH_TOKEN \
+      --store-password-in-clear-text
+    - dotnet build -c Release
+    - |
+      dotnet nuget add source "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/nuget/index.json" \
+      --name gitlab \
+      --username gitlab-ci-token \
+      --password $CI_JOB_TOKEN \
+      --store-password-in-clear-text
+    - |
+      dotnet nuget push "/builds/silverbranch-utilities/security/src/bin/Release/*.nupkg" \
+      --source gitlab
+    - dotnet nuget remove source GroupPackagesSilverbranchUtilities
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
+  environment: production
