@@ -1,4 +1,6 @@
-﻿# Version [1.0.0-alpha] - 2025-07-02
+﻿# Silverbranch Codeworks Security General Extensions Package
+
+## Version [1.0.0-alpha] - 2025-07-02
 
 **Type:** Alpha  
 **Stability:** ⚠️ Experimental – Not recommended for production use.

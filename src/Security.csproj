@@ -31,9 +31,42 @@
         <FileVersion>$(VersionPrefix).0</FileVersion>
         
         <PackageReleaseNotes>
-            Version 1.0.0-alpha
-            ----------------------------------------------------------------
-            notes here
+            # Silverbranch Codeworks Security General Extensions Package
+
+            ## Version [1.0.0-alpha] - 2025-07-02
+
+            **Type:** Alpha
+            **Stability:** ⚠️ Experimental – Not recommended for production use.
+
+            ---
+
+            ### 🚧 Overview
+
+            This alpha release introduces early implementations of planned features for version 1.0.0.
+
+            > ⚠️ APIs and behavior may change without notice in future builds.
+
+            > 💡 Use this release to explore upcoming features and provide feedback.
+
+            ---
+
+            ### ➕ New Features ➕
+
+            - Briefly list experimental features added
+            - e.g. `Added support for async configuration loading via IConfigSource`
+
+            ---
+
+            ### ⚠️ Known Issues / Limitations ️⚠️
+
+            - [ ] So far standardize security extension function only works for backend APIs
+            - [ ] Lacks token and claim validations
+
+            ---
+
+            ### 🔗 Related Links 🔗
+
+            - [Full Changelog](CHANGELOG.md#Version-100-alpha)
         </PackageReleaseNotes>
     </PropertyGroup>
 
@@ -65,7 +98,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Gay.Silverbranch.pkg.Utilities.General" Version="1.0.0-alpha-20250701-013653" />
+      <PackageReference Include="Gay.Silverbranch.pkg.Utilities.General" Version="1.0.0-alpha-20250721-041553" />
       <PackageReference Include="Keycloak.AuthServices.Authentication" Version="2.6.1" />
       <PackageReference Include="Keycloak.AuthServices.Authorization" Version="2.6.1" />
     </ItemGroup>

@@ -1,9 +1,12 @@
 ![Silverbranch Codeworks Banner](https://gitlab.com/silverbranch-utilities/assets/-/raw/trunk/banner-pride.png)
-# 📦 Silverbranch Codeworks Security General
+# 📦 Silverbranch Codeworks Security General Extensions Package
 
 ![GitHub License](https://img.shields.io/github/license/beaniecazier/Silverbranch.Security.General)
 
+## Overview
 The General collection Authorization, Authentication and Security codebase for all Silverbranch Codeworks Software Solutions
+
+This package is built for [.NET version(s)] and supports [platforms, if applicable].
 
 ## Project status
 This is currently in an unreleased alpha state while I get everything ready for the first two major projects to be pushed
