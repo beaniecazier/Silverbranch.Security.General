@@ -6,7 +6,7 @@
 ## Overview
 The General collection Authorization, Authentication and Security codebase for all Silverbranch Codeworks Software Solutions
 
-This package is built for [.NET version(s)] and supports [platforms, if applicable].
+> This package is built for [.NET version(s)] and supports [platforms, if applicable].
 
 ## Project status
 This is currently in an unreleased alpha state while I get everything ready for the first two major projects to be pushed
