@@ -23,15 +23,17 @@ deploy:
       --username $NUGET_PULL_USER \
       --password $NUGET_AUTH_TOKEN \
       --store-password-in-clear-text
-    - dotnet build -c Release
     - |
       dotnet nuget add source "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/nuget/index.json" \
       --name gitlab \
       --username gitlab-ci-token \
       --password $CI_JOB_TOKEN \
       --store-password-in-clear-text
+    - dotnet build -c Release
+    - PACKAGE_PATH=$(find . -type f -name "Gay.Silverbranch.pkg.Utilities.Security*.nupkg"| head -n 1)
+    - echo "Pushing $PACKAGE_PATH"
     - |
-      dotnet nuget push "/builds/silverbranch-utilities/security/general/src/bin/Release/*.nupkg" \
+      dotnet nuget push "$PACKAGE_PATH" \
       --source gitlab
     - dotnet nuget remove source GroupPackagesSilverbranchUtilities
   rules:
