@@ -1,4 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TimeStamp></TimeStamp>
+    </PropertyGroup>
     
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
@@ -16,8 +19,6 @@
         <AssemblyName>Utilities.Security</AssemblyName>
         <RootNamespace>Gay.Silverbranch.$(AssemblyName)</RootNamespace>
         <PackageId>Gay.Silverbranch.pkg.$(AssemblyName)</PackageId>
-        <VersionPrefix>1.0.0</VersionPrefix>
-        <VersionSuffix>alpha-$([System.DateTime]::UtcNow.ToString("yyyyMMdd-HHmmss"))</VersionSuffix>
         <PackageProjectUrl>silverbranch-codeworks.com</PackageProjectUrl>
         <!--    <RepositoryUrl></RepositoryUrl>-->
 
@@ -27,6 +28,9 @@
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 
+        <VersionPrefix>1.0.0</VersionPrefix>
+        <VersionSuffix></VersionSuffix>
+        <PackageVersion>$(VersionPrefix)$(VersionSuffix)$(TimeStamp)</PackageVersion>
         <AssemblyVersion>$(VersionPrefix).0</AssemblyVersion>
         <FileVersion>$(VersionPrefix).0</FileVersion>
         
@@ -98,7 +102,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Gay.Silverbranch.pkg.Utilities.General" Version="1.0.0-alpha-20250731-172824" />
+      <PackageReference Include="Gay.Silverbranch.pkg.Utilities.General" Version="1.0.0-alpha-20250823-020030" />
       <PackageReference Include="Keycloak.AuthServices.Authentication" Version="2.6.1" />
       <PackageReference Include="Keycloak.AuthServices.Authorization" Version="2.6.1" />
     </ItemGroup>
