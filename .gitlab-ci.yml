@@ -15,11 +15,12 @@ include:
 
 deploy:
   stage: deploy
-  script:
+  variables:
+    VERSION_SUFFIX: "-alpha"
+  before_script:
     - |
-      dotnet nuget add \
-      source "${CI_API_V4_URL}/groups/$NUGET_GROUP_ID_SILVERBRANCH/-/packages/nuget/index.json" \
-      --name GroupPackagesSilverbranchUtilities \
+      dotnet nuget add source "${CI_API_V4_URL}/groups/$NUGET_GROUP_ID_SILVERBRANCH/-/packages/nuget/index.json" \
+      --name GroupPackagesSilverbranch \
       --username $NUGET_PULL_USER \
       --password $NUGET_AUTH_TOKEN \
       --store-password-in-clear-text
@@ -29,13 +30,13 @@ deploy:
       --username gitlab-ci-token \
       --password $CI_JOB_TOKEN \
       --store-password-in-clear-text
-    - dotnet build -c Release
+  script:
+    - TIMESTAMP=$(date -u +"-%Y%m%d-%H%M%S")
+    - dotnet build -c Release -p:versionsuffix=$VERSION_SUFFIX -p:timestamp=$TIMESTAMP
     - PACKAGE_PATH=$(find . -type f -name "Gay.Silverbranch.pkg.Utilities.Security*.nupkg"| head -n 1)
     - echo "Pushing $PACKAGE_PATH"
-    - |
-      dotnet nuget push "$PACKAGE_PATH" \
-      --source gitlab
-    - dotnet nuget remove source GroupPackagesSilverbranchUtilities
+    - dotnet nuget push "$PACKAGE_PATH" --source gitlab
+    - dotnet nuget remove source GroupPackagesSilverbranch
   rules:
     - if: $CI_COMMIT_REF_PROTECTED == "true"
   environment: production
