@@ -1,9 +1,13 @@
 ﻿using Gay.Silverbranch.Utilities.Security.Constants;
 using Keycloak.AuthServices.Authentication;
 using Keycloak.AuthServices.Authorization;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace Gay.Silverbranch.Utilities.Security.Extensions;
 
@@ -64,7 +68,9 @@ public static class AuthServiceCollectionExtensions
     //     return services;
     // }
     
-    public static IServiceCollection AddKeycloakAuthApi(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddKeycloakAuthApi(
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddKeycloakWebApi(configuration,
@@ -92,6 +98,60 @@ public static class AuthServiceCollectionExtensions
                 policy => policy.RequireResourceRoles(AuthConstants.MemberClaimName));
         
         return services;
+    }
+    
+    
+    
+    private static string _keycloakResource = "";
+
+    public static IServiceCollection AddKeycloakAuthApiClient(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        var keycloakConfig = configuration.GetSection("Keycloak");
+        _keycloakResource = keycloakConfig["resource"];
+
+        services.AddAuthentication(PopulateConfigureOptions())
+            //.AddKeycloakWebApp(builder.Configuration);
+            .AddKeycloakWebApp(keycloakConfig,
+                //configureCookieAuthenticationOptions: opt => { },
+                configureOpenIdConnectOptions: opt =>
+                {
+                    opt.ResponseType = OpenIdConnectResponseType.Code;
+                    opt.RequireHttpsMetadata = false;
+                    opt.SaveTokens = true;
+                });
+
+        services.AddAuthorization()
+            .AddKeycloakAuthorization(PopulateGenerateConfigureKeycloakAuthorizationOptions)
+            .AddAuthorizationBuilder()
+            .AddPolicy(
+                AuthConstants.AdminUserPolicyName,
+                policy => policy.RequireResourceRoles(AuthConstants.AdminUserClaimName))
+            .AddPolicy(
+                AuthConstants.TrustedMemberPolicyName,
+                policy => policy.RequireResourceRoles(AuthConstants.TrustedMemberClaimName))
+            .AddPolicy(
+                AuthConstants.MemberPolicyName,
+                policy => policy.RequireResourceRoles(AuthConstants.MemberClaimName));
+        
+        return services;
+    }
+
+    private static void PopulateGenerateConfigureKeycloakAuthorizationOptions(KeycloakAuthorizationOptions opt)
+    {
+        opt.EnableRolesMapping = RolesClaimTransformationSource.ResourceAccess;
+        opt.RolesResource = _keycloakResource;
+    }
+
+    private static Action<AuthenticationOptions> PopulateConfigureOptions()
+    {
+        return options =>
+        {
+            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            options.DefaultForbidScheme = OpenIdConnectDefaults.AuthenticationScheme;
+        };
     }
 }
 
